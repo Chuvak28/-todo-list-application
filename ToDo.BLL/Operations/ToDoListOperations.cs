@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using ToDo.BLL.Entity;
 using ToDo.BLL.Interfaces;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 
