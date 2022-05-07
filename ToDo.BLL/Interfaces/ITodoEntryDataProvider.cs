@@ -7,11 +7,11 @@ namespace ToDo.BLL.Interfaces
 {
     public interface ITodoEntryDataProvider
     {
-        public string Create(TODOEntry item);
-        public string Remove(int id);
+        public TODOEntry Create(TODOEntry item);
+        public int Remove(int id);
         public TODOEntry Update(TODOEntry item);
         public List<TODOEntry> GetAll();
         public TODOEntry Get(int id);
-        public string SetStatus(int id, string status);
+        public int SetStatus(int id, bool status);
     }
 }

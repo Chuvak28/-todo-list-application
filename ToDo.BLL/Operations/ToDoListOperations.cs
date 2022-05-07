@@ -87,7 +87,7 @@ namespace ToDo.BLL.Operations
                 throw new ArgumentNullException(nameof(item), "List is null for update");
             }
             db.Lists.Update(item);
-
+            db.SaveChanges();
             return item;
         }
     }
