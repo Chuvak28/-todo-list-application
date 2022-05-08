@@ -47,7 +47,13 @@ namespace ToDoListApplication.Tests
         [TestCase(9, null, false)]
         public void ModifyListNull(int listId, string modifyName, bool isVisible)
         {
-            Assert.Throws<ArgumentNullException>(() => this.listOperation.Modify(listId, modifyName, isVisible), "Should throw an ArgumentNullException.");
+            TODOList item = new TODOList()
+            {
+                id = listId,
+                name = modifyName,
+                isVisible = isVisible,
+            };
+            Assert.Throws<ArgumentNullException>(() => this.listOperation.Update(item), "Should throw an ArgumentNullException.");
         }
 
         [TestCase(-1)]
