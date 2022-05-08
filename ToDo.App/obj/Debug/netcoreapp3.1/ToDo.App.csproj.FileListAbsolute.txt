@@ -1,0 +1,5 @@
+E:\C# Projects\todo-list-application\ToDo.App\obj\Debug\netcoreapp3.1\ToDo.App.csproj.AssemblyReference.cache
+E:\C# Projects\todo-list-application\ToDo.App\obj\Debug\netcoreapp3.1\ToDo.App.GeneratedMSBuildEditorConfig.editorconfig
+E:\C# Projects\todo-list-application\ToDo.App\obj\Debug\netcoreapp3.1\ToDo.App.AssemblyInfoInputs.cache
+E:\C# Projects\todo-list-application\ToDo.App\obj\Debug\netcoreapp3.1\ToDo.App.AssemblyInfo.cs
+E:\C# Projects\todo-list-application\ToDo.App\obj\Debug\netcoreapp3.1\ToDo.App.csproj.CoreCompileInputs.cache
