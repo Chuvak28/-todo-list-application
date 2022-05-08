@@ -64,10 +64,10 @@ namespace ToDo.BLL.Operations
                 throw new ArgumentOutOfRangeException(nameof(id), "out of range");
             }
 
-            TODOList removeList = db.Lists.Find(id);
+            TODOEntry removeList = db.Entries.Find(id);
             if (removeList is null)
-                throw new ArgumentNullException(nameof(removeList), "List with such ID not found");
-            db.Lists.Remove(removeList);
+                throw new ArgumentNullException(nameof(removeList), "Entry with such ID not found");
+            db.Entries.Remove(removeList);
             int returnValue = db.SaveChanges();
 
             return returnValue;

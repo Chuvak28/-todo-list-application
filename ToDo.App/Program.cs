@@ -77,11 +77,11 @@ namespace ToDo.App
 
             if (resultHide == "y")
             {
-                isVisible = true;
+                isVisible = false;
             }
             else
             {
-                isVisible = false;
+                isVisible = true;
             }
 
             TODOList modifyList = new TODOList()
@@ -118,6 +118,9 @@ namespace ToDo.App
             Console.WriteLine("List:\n\t ID: {0}\tName: {1}\tVisible: {2}", list.id, list.name, list.isVisible);
         }
 
+        /// <summary>
+        /// Set status of entru
+        /// </summary>
         static void SetStatusEntry()
         {
             Console.WriteLine("Enter ID of an entry:");
@@ -175,9 +178,9 @@ namespace ToDo.App
             };
 
             var result = new ToDoEntryOperations().Create(newentity);
-            Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3}",
-                newentity.id, newentity.title,
-                newentity.description, newentity.dueDate, newentity.isDone);
+            Console.WriteLine("You added entry:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
+                result.id, result.title,
+                result.description, result.dueDate, result.isDone);
         }
 
         /// <summary>
@@ -215,7 +218,7 @@ namespace ToDo.App
 
             foreach (var entry in entries)
             {
-                Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3}",
+                Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
                 entry.id, entry.title, entry.description, entry.dueDate, entry.isDone);
             }
         }
@@ -226,8 +229,56 @@ namespace ToDo.App
             int entryId = Convert.ToInt32(Console.ReadLine());
 
             TODOEntry entry = new ToDoEntryOperations().Get(entryId);
-            Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3}",
+            Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
                 entry.id, entry.title, entry.description, entry.dueDate, entry.isDone);
+        }
+
+        /// <summary>
+        /// Update Entry
+        /// </summary>
+        static void UpdateEntry()
+        {
+            Console.WriteLine("Please enter id of entry to modify: ");
+            int entryId = Convert.ToInt32(Console.ReadLine());
+
+            TODOEntry entry = new ToDoEntryOperations().Get(entryId);
+
+            Console.WriteLine("1-Title");
+            Console.WriteLine("2-Description");
+            Console.WriteLine("3-Due date");
+            Console.WriteLine("4-Completed");
+            Console.Write("What you want to modify choose 1-4:");
+            int x = Convert.ToInt32(Console.ReadLine());
+
+            switch (x)
+            {
+                case 1:
+                    Console.WriteLine("Enter a new name for the title");
+                    string titleName = Console.ReadLine();
+                    entry.title = titleName;
+                    break;
+                case 2:
+                    Console.WriteLine("Enter a new name for the description");
+                    string descriptionName = Console.ReadLine();
+                    entry.description = descriptionName;
+                    break;
+                case 3:
+                    Console.WriteLine("Enter due date for entry(example “MM/dd/yyyy”):");
+                    string pattern = "MM/dd/yyyy";
+                    DateTime date = DateTime.ParseExact(Console.ReadLine(), pattern, null);
+                    entry.dueDate = date;
+                    break;
+                case 4:
+                    Console.WriteLine("Does the task is finished(true/false):");
+                    bool status = Convert.ToBoolean(Console.ReadLine());
+                    entry.isDone = status;
+                    break;
+            }
+
+            var result = new ToDoEntryOperations().Update(entry);
+
+            Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
+                result.id, result.title, result.description, result.dueDate, result.isDone);
         }
 
         static void Menu()
@@ -236,12 +287,16 @@ namespace ToDo.App
             while (true)
             {
                 Console.WriteLine("  1. Create a list");
-                Console.WriteLine("  2. Assign entity to a list");
-                Console.WriteLine("  3. Show data");
-                Console.WriteLine("  4. Modify a List");
-                Console.WriteLine("  5. Modify an Entry");
-                Console.WriteLine("  6. Set status of entry");
-                Console.WriteLine("  7. Remove a List");
+                Console.WriteLine("  2. Get all list data");
+                Console.WriteLine("  3. Get one list");
+                Console.WriteLine("  4. Modify a ist");
+                Console.WriteLine("  5. Remove a list");
+                Console.WriteLine("  6. Create an entry");
+                Console.WriteLine("  7. Remove an entry");
+                Console.WriteLine("  8. Get one entry");
+                Console.WriteLine("  9. Get all entry data");
+                Console.WriteLine("  10. Set status of an entry");
+                Console.WriteLine("  11. Modify an entry");
                 Console.Write("Choose one (q to quit): ");
 
                 string choice = Console.ReadLine();
@@ -283,7 +338,9 @@ namespace ToDo.App
                     case "10":
                         SetStatusEntry();
                         break;
-                    
+                    case "11":
+                        UpdateEntry();
+                        break;
                 }
             }
         }
