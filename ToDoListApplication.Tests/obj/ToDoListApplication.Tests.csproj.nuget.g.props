@@ -30,8 +30,8 @@
     <Import Project="$(NuGetPackageRoot)microsoft.codeanalysis.fxcopanalyzers\3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props" Condition="Exists('$(NuGetPackageRoot)microsoft.codeanalysis.fxcopanalyzers\3.0.0\build\Microsoft.CodeAnalysis.FxCopAnalyzers.props')" />
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\Jasur\.nuget\packages\newtonsoft.json\10.0.1</PkgNewtonsoft_Json>
     <PkgStyleCop_Analyzers Condition=" '$(PkgStyleCop_Analyzers)' == '' ">C:\Users\Jasur\.nuget\packages\stylecop.analyzers\1.1.118</PkgStyleCop_Analyzers>
-    <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\Jasur\.nuget\packages\newtonsoft.json\9.0.1</PkgNewtonsoft_Json>
     <PkgMicrosoft_NetFramework_Analyzers Condition=" '$(PkgMicrosoft_NetFramework_Analyzers)' == '' ">C:\Users\Jasur\.nuget\packages\microsoft.netframework.analyzers\3.0.0</PkgMicrosoft_NetFramework_Analyzers>
     <PkgMicrosoft_NetCore_Analyzers Condition=" '$(PkgMicrosoft_NetCore_Analyzers)' == '' ">C:\Users\Jasur\.nuget\packages\microsoft.netcore.analyzers\3.0.0</PkgMicrosoft_NetCore_Analyzers>
     <PkgMicrosoft_CodeQuality_Analyzers Condition=" '$(PkgMicrosoft_CodeQuality_Analyzers)' == '' ">C:\Users\Jasur\.nuget\packages\microsoft.codequality.analyzers\3.0.0</PkgMicrosoft_CodeQuality_Analyzers>
