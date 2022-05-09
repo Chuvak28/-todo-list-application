@@ -7,11 +7,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{883FBA4F-99C8-4326-9C20-2B11147282F4}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		Solution Info.md = Solution Info.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDo.BLL", "ToDo.BLL\ToDo.BLL.csproj", "{6A9B9B7D-33A8-442D-BB38-02964CD5FB26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDo.App", "ToDo.App\ToDo.App.csproj", "{0AFEECEF-42FC-445B-A9D3-B60F9F03BF44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDo.App", "ToDo.App\ToDo.App.csproj", "{0AFEECEF-42FC-445B-A9D3-B60F9F03BF44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
