@@ -27,7 +27,7 @@ namespace ToDo.BLL.Operations
                 throw new ArgumentNullException(nameof(item));
             }
 
-            db.Lists.FirstOrDefault(list => list.id == item.listid).Entries.Add(item);
+            db.Entries.Add(item);
             db.SaveChanges();
 
             return item;
