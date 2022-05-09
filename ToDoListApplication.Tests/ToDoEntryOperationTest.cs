@@ -9,23 +9,31 @@ namespace ToDoListApplication.Tests
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>")]
     [TestFixture]
-    public class ToDoListOperationTest
+    public class ToDoEntryOperationTest
     {
-        private readonly ToDoListOperations listOperation = new ToDoListOperations();
+        private readonly ToDoEntryOperations entryOperation = new ToDoEntryOperations();
 
-        [TestCase("Clean Room")]
-        public void Create(string str)
+        [TestCase("Clean Room", "wash window", "10/10/2022", true, 3)]
+        public void Create(string title, string description, DateTime dt, bool isDone, int id)
         {
-            var result = this.listOperation.Create(str);
+            TODOEntry newentity = new TODOEntry()
+            {
+                title = title,
+                description = description,
+                dueDate = dt,
+                isDone = isDone,
+                listid = id,
+            };
+            var result = this.entryOperation.Create(newentity);
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.name, str);
+            Assert.AreEqual(result.title, title);
             Assert.IsTrue(result.id != 0);
         }
 
         [TestCase(null)]
         public void CreateListNameNull(string str)
         {
-            Assert.Throws<ArgumentNullException>(() => this.listOperation.Create(str), "Should throw an ArgumentNullException.");
+            Assert.Throws<ArgumentNullException>(() => this.entryOperation.Create(str), "Should throw an ArgumentNullException.");
         }
 
         [TestCase(4, "Work", false)]
@@ -59,7 +67,7 @@ namespace ToDoListApplication.Tests
         [TestCase(-1)]
         public void RemoveOutOfRange(int listId)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => this.listOperation.Remove(listId), "Remove should throw an ArgumentOutOfRangeException.");
+            Assert.Throws<ArgumentOutOfRangeException>(() => this.entryOperation.Remove(listId), "Remove should throw an ArgumentOutOfRangeException.");
         }
     }
 }
