@@ -31,37 +31,27 @@ namespace ToDoListApplication.Tests
         }
 
         [TestCase(null)]
-        public void CreateListNameNull(string str)
+        public void CreateListNameNull(TODOEntry item)
         {
-            Assert.Throws<ArgumentNullException>(() => this.entryOperation.Create(str), "Should throw an ArgumentNullException.");
+            Assert.Throws<ArgumentNullException>(() => this.entryOperation.Create(item), "Should throw an ArgumentNullException.");
         }
 
-        [TestCase(4, "Work", false)]
-        public void Update(int listId, string modifyName, bool isVisible)
+        [TestCase("Clean Room", "wash floor", "10/10/2022", false, 3)]
+        public void Update(string title, string description, DateTime dt, bool isDone, int id)
         {
-            TODOList item = new TODOList()
+            TODOEntry newentity = new TODOEntry()
             {
-                id = listId,
-                name = modifyName,
-                isVisible = isVisible,
+                title = title,
+                description = description,
+                dueDate = dt,
+                isDone = isDone,
+                listid = id,
             };
 
-            var result = this.listOperation.Update(item);
+            var result = this.entryOperation.Update(newentity);
             Assert.IsNotNull(result);
-            Assert.AreEqual(result.name, modifyName);
+            Assert.AreEqual(result.title, title);
             Assert.IsTrue(result.id != 0);
-        }
-
-        [TestCase(9, null, false)]
-        public void ModifyListNull(int listId, string modifyName, bool isVisible)
-        {
-            TODOList item = new TODOList()
-            {
-                id = listId,
-                name = modifyName,
-                isVisible = isVisible,
-            };
-            Assert.Throws<ArgumentNullException>(() => this.listOperation.Update(item), "Should throw an ArgumentNullException.");
         }
 
         [TestCase(-1)]
