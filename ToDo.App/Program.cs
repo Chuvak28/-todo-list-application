@@ -8,6 +8,7 @@ namespace ToDo.App
 {
     class Program
     {
+
         static void Main()
         {
             Console.WriteLine("\tWelcome to ToDoList Application!");
@@ -18,6 +19,8 @@ namespace ToDo.App
 
         /// <summary>
         /// Create list
+        /// P.S - comment must be helpfull. Your code is self-described by name, not need to have a XML comment here
+        /// XML comments mostly used to describe some interfaces and public dependencies, to give a clear instruction about implementation, but not for private methods
         /// </summary>
         static void CreateList()
         {
@@ -33,13 +36,18 @@ namespace ToDo.App
                 Console.WriteLine("You created list: {0}", newList.name);
                 Console.WriteLine();
                 Console.Write("Do you want enter more lists (y/n)");
+
+                // looks like this combination :
+                //
+                // Console.WriteLine();
+                // Console.WriteLine("SOME TEXT HERE");
+                //
+                // used pretty othen, maybe better to have a separate function for this? 
+
                 choice = Console.ReadLine();
             }
         }
 
-        /// <summary>
-        /// Remove list by ID
-        /// </summary>
         static void RemoveList()
         {
             string choice = "y";
@@ -49,7 +57,7 @@ namespace ToDo.App
                 Console.WriteLine();
                 Console.WriteLine("Enter ID of a list:");
                 listId = Convert.ToInt32(Console.ReadLine());
-                var removeList = new ToDoListOperations().Remove(listId);
+                var removeList = new ToDoListOperations().Remove(listId); // Your programm based on bottom layer behaviour. Lets think about future, and if the Entity Framework will be replaced, this magic number (0 or 1) will make some problems for us. I suggest to use boolean instead of integer.
                 if (removeList > 0)
                 {
                     Console.WriteLine("List with ID: {0} successfully removed ", listId);
@@ -59,7 +67,7 @@ namespace ToDo.App
                     Console.WriteLine("Sorry, list with ID: {0} unsuccessfully removed ", listId);
                 }
 
-                Console.Write("Do you want to remove more lists (y/n)");
+                Console.Write("Do you want to remove more lists (y/n)"); // What will happen then I'll chose Yes ???
                 choice = Console.ReadLine();
                 Console.WriteLine();
             }
@@ -68,7 +76,7 @@ namespace ToDo.App
         static void UpdateList()
         {
             Console.WriteLine("Enter a list ID to modify");
-            int listId = Convert.ToInt32(Console.ReadLine());
+            int listId = Convert.ToInt32(Console.ReadLine()); // Are you sure about input? What will happen then i'll try type "blahblahblah" istead of appropriate integer? You should be aware of the type convertion
             Console.WriteLine("Enter a new name for the list");
             string modifyName = Console.ReadLine();
             Console.WriteLine("Do you want to hide a list from the list view(y/n)");
@@ -112,7 +120,7 @@ namespace ToDo.App
         static void GetList()
         {
             Console.WriteLine("Enter ID of a list:");
-            int listId = Convert.ToInt32(Console.ReadLine());
+            int listId = Convert.ToInt32(Console.ReadLine()); // Same here, protect your type convertion please, I can put here innapropriate value and it will crash the programm (19028731982739816723987612983761982763189726398172639817263981726398172639816239871622389761298367)
 
             TODOList list = new ToDoListOperations().Get(listId);
             Console.WriteLine("List:\n\t ID: {0}\tName: {1}\tVisible: {2}", list.id, list.name, list.isVisible);
@@ -124,11 +132,11 @@ namespace ToDo.App
         static void SetStatusEntry()
         {
             Console.WriteLine("Enter ID of an entry:");
-            int entryId = Convert.ToInt32(Console.ReadLine());
+            int entryId = Convert.ToInt32(Console.ReadLine()); // Type convertion
             Console.WriteLine("Enter status of an entry(true/false):");
-            bool entryStatus = Convert.ToBoolean(Console.ReadLine());
-            var result = new ToDoEntryOperations().SetStatus(entryId, entryStatus);
-            if (result > 0)
+            bool entryStatus = Convert.ToBoolean(Console.ReadLine()); // Unsafe type convertion
+            var result = new ToDoEntryOperations().SetStatus(entryId, entryStatus); // Use UPDATE method instead of SetStatus
+            if (result > 0) // Use boolean instead of magic numbers
             {
                 Console.WriteLine("Status changed successfully");
             }
@@ -138,28 +146,25 @@ namespace ToDo.App
             }    
         }
 
-        /// <summary>
-        /// Create entry
-        /// </summary>
         static void CreateEntry()
         {
             Console.WriteLine("Enter an list ID");
-            int listId = Convert.ToInt32(Console.ReadLine());
+            int listId = Convert.ToInt32(Console.ReadLine()); // Type
 
-            Console.WriteLine("Enter title for entry:");
-            string title = Console.ReadLine();
+            Console.WriteLine("Enter title for entry:"); // this two lines can be simplified
+            string title = Console.ReadLine();           // try to create method for avoid code duplication
 
             Console.WriteLine("Enter description for entry :");
             string description = Console.ReadLine();
 
             Console.WriteLine("Enter due date for entry(example “MM/dd/yyyy”):");
             string pattern = "MM/dd/yyyy";
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), pattern, null);
+            DateTime date = DateTime.ParseExact(Console.ReadLine(), pattern, null); // type convertion, protect yourself from dummy users
 
             Console.WriteLine("Does the task is finished(y/n):");
             string statusChar = Console.ReadLine();
             bool statusString;
-            if (statusChar == "y")
+            if (statusChar == "y") // I can see multiply places with this code, can we create method for this ?
             {
                 statusString = true;
             }
@@ -183,9 +188,6 @@ namespace ToDo.App
                 result.description, result.dueDate, result.isDone);
         }
 
-        /// <summary>
-        /// Remove Entry
-        /// </summary>
         static void RemoveEntry()
         {
             string choice = "y";
@@ -194,9 +196,9 @@ namespace ToDo.App
             {
                 Console.WriteLine();
                 Console.WriteLine("Enter ID of a entry:");
-                entryId = Convert.ToInt32(Console.ReadLine());
+                entryId = Convert.ToInt32(Console.ReadLine()); // type convertion
                 var removeList = new ToDoEntryOperations().Remove(entryId);
-                if (removeList > 0)
+                if (removeList > 0) // magic numbers
                 {
                     Console.WriteLine("List with ID: {0} successfully removed ", entryId);
                 }
@@ -233,9 +235,6 @@ namespace ToDo.App
                 entry.id, entry.title, entry.description, entry.dueDate, entry.isDone);
         }
 
-        /// <summary>
-        /// Update Entry
-        /// </summary>
         static void UpdateEntry()
         {
             Console.WriteLine("Please enter id of entry to modify: ");
@@ -248,9 +247,9 @@ namespace ToDo.App
             Console.WriteLine("3-Due date");
             Console.WriteLine("4-Completed");
             Console.Write("What you want to modify choose 1-4:");
-            int x = Convert.ToInt32(Console.ReadLine());
+            int x = Convert.ToInt32(Console.ReadLine()); // type convertion
 
-            switch (x)
+            switch (x) // don't forget about 'default' in switch, what will happen if I'll type "9" ?
             {
                 case 1:
                     Console.WriteLine("Enter a new name for the title");
@@ -302,7 +301,7 @@ namespace ToDo.App
                 string choice = Console.ReadLine();
                 if (choice == "q")
                     break;
-                switch (choice)
+                switch (choice) // don't forget about 'default' in switch case
                 {
                     case "1":
                         CreateList();

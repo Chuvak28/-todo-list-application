@@ -55,13 +55,11 @@ namespace ToDo.BLL.Operations
         public List<TODOList> GetAll()
         {
             List<TODOList> allLists = new List<TODOList>();
-            var lists = db.Lists;
-            foreach (var list in lists) // query executed and data obtained from database
-            {
-                allLists.Add(list);
-            }
+            // var lists = db.Lists; // To simplify, use LINQ instead of the loop
 
-            return allLists;
+            var list = db.Lists.ToList();
+
+            return list;
         }
 
         public int Remove(int id)
