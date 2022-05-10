@@ -13,40 +13,34 @@ namespace ToDo.App
             Console.WriteLine("\tWelcome to ToDoList Application!");
 
             Menu();
-
         }
 
-        /// <summary>
-        /// Create list
-        /// </summary>
+        static void DisplayList(TODOList item)
+        {
+            Console.WriteLine("List:\n\t ID: {0}\tName: {1}\tVisible: {2}", item.id, item.name, item.isVisible);
+        }
+
         static void CreateList()
         {
             string choice = "y";
             string listName;
             while (choice != "n")
             {
-                Console.WriteLine();
                 Console.WriteLine("Enter a list name:");
                 listName = Console.ReadLine();
                 TODOList newList = new ToDoListOperations().Create(listName);
-                Console.WriteLine();
-                Console.WriteLine("You created list: {0}", newList.name);
-                Console.WriteLine();
+                DisplayList(newList);
                 Console.Write("Do you want enter more lists (y/n)");
                 choice = Console.ReadLine();
             }
         }
 
-        /// <summary>
-        /// Remove list by ID
-        /// </summary>
         static void RemoveList()
         {
             string choice = "y";
             int listId;
             while (choice != "n")
             {
-                Console.WriteLine();
                 Console.WriteLine("Enter ID of a list:");
                 listId = Convert.ToInt32(Console.ReadLine());
                 var removeList = new ToDoListOperations().Remove(listId);
@@ -61,14 +55,13 @@ namespace ToDo.App
 
                 Console.Write("Do you want to remove more lists (y/n)");
                 choice = Console.ReadLine();
-                Console.WriteLine();
             }
         }
 
         static void UpdateList()
         {
             Console.WriteLine("Enter a list ID to modify");
-            int listId = Convert.ToInt32(Console.ReadLine());
+            int listId = int.Parse(Console.ReadLine());
             Console.WriteLine("Enter a new name for the list");
             string modifyName = Console.ReadLine();
             Console.WriteLine("Do you want to hide a list from the list view(y/n)");
@@ -92,10 +85,7 @@ namespace ToDo.App
             };
 
             modifyList = new ToDoListOperations().Update(modifyList);
-
-            Console.WriteLine("List with ID {0} have new values {1}  {2}", modifyList.id,
-                modifyList.name, modifyList.isVisible);
-            Console.WriteLine();
+            DisplayList(modifyList);
         }
 
         static void GetAllListData()
@@ -112,15 +102,12 @@ namespace ToDo.App
         static void GetList()
         {
             Console.WriteLine("Enter ID of a list:");
-            int listId = Convert.ToInt32(Console.ReadLine());
+            int listId = int.Parse(Console.ReadLine());
 
             TODOList list = new ToDoListOperations().Get(listId);
-            Console.WriteLine("List:\n\t ID: {0}\tName: {1}\tVisible: {2}", list.id, list.name, list.isVisible);
+            DisplayList(list);
         }
 
-        /// <summary>
-        /// Set status of entru
-        /// </summary>
         static void SetStatusEntry()
         {
             Console.WriteLine("Enter ID of an entry:");
@@ -305,41 +292,59 @@ namespace ToDo.App
                 switch (choice)
                 {
                     case "1":
+                        Console.WriteLine();
                         CreateList();
                         Console.WriteLine();
                         break;
                     case "2":
+                        Console.WriteLine();
                         GetAllListData();
                         Console.WriteLine();
                         break;
                     case "3":
+                        Console.WriteLine();
                         GetList();
                         Console.WriteLine();
                         break;
                     case "4":
+                        Console.WriteLine();
                         UpdateList();
+                        Console.WriteLine();
                         break;
                     case "5":
+                        Console.WriteLine();
                         RemoveList();
                         Console.WriteLine();
                         break;
                     case "6":
+                        Console.WriteLine();
                         CreateEntry();
+                        Console.WriteLine();
                         break;
                     case "7":
+                        Console.WriteLine();
                         RemoveEntry();
+                        Console.WriteLine();
                         break;
                     case "8":
+                        Console.WriteLine();
                         GetEntry();
+                        Console.WriteLine();
                         break;
                     case "9":
+                        Console.WriteLine();
                         GetAllEntryData();
+                        Console.WriteLine();
                         break;
                     case "10":
+                        Console.WriteLine();
                         SetStatusEntry();
+                        Console.WriteLine();
                         break;
                     case "11":
+                        Console.WriteLine();
                         UpdateEntry();
+                        Console.WriteLine();
                         break;
                 }
             }
