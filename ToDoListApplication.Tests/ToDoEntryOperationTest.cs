@@ -8,9 +8,11 @@ using ToDo.BLL.Operations;
 namespace ToDoListApplication.Tests
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Ожидание>")]
-    [TestFixture]
+
+    // [TestFixture]
     public class ToDoEntryOperationTest
     {
+        // Please try to mock your DB dependency in the test. 
         private readonly ToDoEntryOperations entryOperation = new ToDoEntryOperations();
 
         [TestCase("Clean Room", "wash window", "10/10/2022", true, 3)]

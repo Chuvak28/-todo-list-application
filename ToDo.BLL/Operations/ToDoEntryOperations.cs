@@ -22,6 +22,7 @@ namespace ToDo.BLL.Operations
         }
         public TODOEntry Create(TODOEntry item)
         {
+            // It's a good place to add validation for empty name, or innapropriate name (max lenght limitation)
             if (item is null)
             {
                 throw new ArgumentNullException(nameof(item));
@@ -35,7 +36,7 @@ namespace ToDo.BLL.Operations
 
         public TODOEntry Get(int id)
         {
-            TODOEntry getList = db.Entries.FirstOrDefault(p => p.id == id);
+            TODOEntry getList = db.Entries.FirstOrDefault(p => p.id == id); // Are you sure this will return NULL if no any entity with such ID??
 
             if (getList is null)
             {
@@ -47,6 +48,7 @@ namespace ToDo.BLL.Operations
 
         public List<TODOEntry> GetAll()
         {
+            // Rewrite to use LINQ instead of the loop
             List<TODOEntry> allLists = new List<TODOEntry>();
             var entries = db.Entries;
             foreach (var entry in entries) // query executed and data obtained from database
@@ -64,15 +66,19 @@ namespace ToDo.BLL.Operations
                 throw new ArgumentOutOfRangeException(nameof(id), "out of range");
             }
 
-            TODOEntry removeList = db.Entries.Find(id);
+            TODOEntry removeList = db.Entries.Find(id); // In method Get you are using FirstOrDefault, choose one solution
+            // It will be greate to reuse code, try to call here method GET to avoid code duplication
+
             if (removeList is null)
                 throw new ArgumentNullException(nameof(removeList), "Entry with such ID not found");
             db.Entries.Remove(removeList);
+
             int returnValue = db.SaveChanges();
 
-            return returnValue;
+            return returnValue; // Are you sure about return value? Can you read carefully what db.SaveChanges made? 
         }
 
+        // Are we still need SetStatus if we have Update method? 
         public int SetStatus(int id, bool status)
         {
             if (id < 1)
@@ -80,7 +86,9 @@ namespace ToDo.BLL.Operations
                 throw new ArgumentOutOfRangeException(nameof(id), "out of range");
             }
 
-            TODOEntry entry = db.Entries.FirstOrDefault(list => list.id == id);
+            TODOEntry entry = db.Entries.FirstOrDefault(list => list.id == id); // Same here, if you need to find entity, you already have a GET method for this, reuse code
+
+            // https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
 
             entry.isDone = status;
 

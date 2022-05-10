@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ToDo.BLL.Entity
 {
     public class TODOList
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string name { get; set; }
         public bool isVisible { get; set; }
@@ -13,6 +16,7 @@ namespace ToDo.BLL.Entity
 
     public class TODOEntry
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
