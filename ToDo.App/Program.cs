@@ -48,9 +48,6 @@ namespace ToDo.App
             }
         }
 
-        /// <summary>
-        /// Remove list by ID
-        /// </summary>
         static void RemoveList()
         {
             string choice = "y";
@@ -149,9 +146,6 @@ namespace ToDo.App
             }    
         }
 
-        /// <summary>
-        /// Create entry
-        /// </summary>
         static void CreateEntry()
         {
             Console.WriteLine("Enter an list ID");
@@ -194,9 +188,6 @@ namespace ToDo.App
                 result.description, result.dueDate, result.isDone);
         }
 
-        /// <summary>
-        /// Remove Entry
-        /// </summary>
         static void RemoveEntry()
         {
             string choice = "y";
@@ -244,9 +235,6 @@ namespace ToDo.App
                 entry.id, entry.title, entry.description, entry.dueDate, entry.isDone);
         }
 
-        /// <summary>
-        /// Update Entry
-        /// </summary>
         static void UpdateEntry()
         {
             Console.WriteLine("Please enter id of entry to modify: ");

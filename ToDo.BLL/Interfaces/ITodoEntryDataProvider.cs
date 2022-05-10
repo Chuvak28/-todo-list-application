@@ -13,13 +13,15 @@ namespace ToDo.BLL.Interfaces
         public TODOEntry Update(TODOEntry item);
         public List<TODOEntry> GetAll();
         public TODOEntry Get(int id);
-        
+
         /// <summary>
-        /// Here is a good place to have XML comments, for specific, not general method with specific implementation
+        /// Setы status of entry true if completed or false if uncompleted.
+        /// A return value indicates whether the status changes succeeded or failed.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="status"></param>
-        /// <returns></returns>
+        /// <param name="id">An integer that represents ID of entry</param>
+        /// <param name="status">A boolean that represents STATUS of entry and to be modified</param>
+        /// <returns>greater than 0 if status changed successfully; otherwise less than 0
+        /// if status failed to change</returns>
         public int SetStatus(int id, bool status);
     }
 }
