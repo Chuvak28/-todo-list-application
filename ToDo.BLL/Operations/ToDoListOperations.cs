@@ -22,6 +22,10 @@ namespace ToDo.BLL.Operations
 
         public TODOList Create(string name)
         {
+            if (name.Length > 30)
+            {
+                throw new ArgumentOutOfRangeException(nameof(name), "Name should not be more 30 characters");
+            }
 
             if (String.IsNullOrEmpty(name))
             {
@@ -42,7 +46,7 @@ namespace ToDo.BLL.Operations
 
         public TODOList Get(int id)
         {
-            TODOList getList = db.Lists.FirstOrDefault(p => p.id == id);
+            TODOList getList = db.Lists.Find(id);
 
             if (getList is null)
             {
@@ -61,14 +65,8 @@ namespace ToDo.BLL.Operations
 
         public int Remove(int id)
         {
-            if (id < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id), "out of range");
-            }
-
-            TODOList removeList = db.Lists.Find(id);
-            if (removeList is null)
-                throw new ArgumentNullException(nameof(removeList), "List with such ID not found");
+            TODOList removeList = Get(id);
+            
             db.Lists.Remove(removeList);
             int returnValue = db.SaveChanges();
 
