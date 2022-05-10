@@ -108,26 +108,6 @@ namespace ToDo.App
             DisplayList(list);
         }
 
-        static void SetStatusEntry()
-        {
-            Console.WriteLine("Enter ID of an entry:");
-            int entryId = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Enter status of an entry(true/false):");
-            bool entryStatus = Convert.ToBoolean(Console.ReadLine());
-            var result = new ToDoEntryOperations().SetStatus(entryId, entryStatus);
-            if (result > 0)
-            {
-                Console.WriteLine("Status changed successfully");
-            }
-            else
-            {
-                Console.WriteLine("Something goes wrong");
-            }    
-        }
-
-        /// <summary>
-        /// Create entry
-        /// </summary>
         static void CreateEntry()
         {
             Console.WriteLine("Enter an list ID");
