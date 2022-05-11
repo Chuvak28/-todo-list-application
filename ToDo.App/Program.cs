@@ -45,10 +45,6 @@ namespace ToDo.App
 
         static void RemoveList()
         {
-            string choice = "y";
-
-            while (choice != "n")
-            {
                 Console.WriteLine("Enter ID of a list:");
                 string input = Console.ReadLine();
                 bool isString = int.TryParse(input, out int id);
@@ -66,10 +62,6 @@ namespace ToDo.App
                 {
                     Console.WriteLine("Sorry, list with ID: {0} unsuccessfully removed ", id);
                 }
-
-                Console.Write("Do you want to remove more lists (y/n)");
-                choice = Console.ReadLine();
-            }
         }
 
         static void UpdateList()
