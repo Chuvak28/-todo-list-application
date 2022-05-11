@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ToDo.BLL.Entity;
 using ToDo.BLL.Interfaces;
 using System.Linq;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace ToDo.BLL.Operations
 {
@@ -63,14 +63,20 @@ namespace ToDo.BLL.Operations
             return list;
         }
 
-        public int Remove(int id)
+        public bool Remove(int id)
         {
             TODOList removeList = Get(id);
             
             db.Lists.Remove(removeList);
-            int returnValue = db.SaveChanges();
-
-            return returnValue;
+            try
+            {
+                db.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateException) 
+            { 
+                return false; 
+            }
         }
 
         public TODOList Update(TODOList item)

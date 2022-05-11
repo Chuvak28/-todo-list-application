@@ -62,13 +62,19 @@ namespace ToDo.BLL.Operations
             return list;
         }
 
-        public int Remove(int id)
+        public bool Remove(int id)
         {
             TODOEntry removeList = Get(id);
             db.Entries.Remove(removeList);
-            int returnValue = db.SaveChanges();
-
-            return returnValue;
+            try
+            {
+                db.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateException)
+            {
+                return false;
+            }
         }
 
         public TODOEntry Update(TODOEntry item)
