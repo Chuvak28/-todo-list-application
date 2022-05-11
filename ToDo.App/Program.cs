@@ -232,6 +232,10 @@ namespace ToDo.App
             Console.WriteLine("Enter ID of a list:");
             string input = Console.ReadLine();
             bool isString = int.TryParse(input, out int entryId);
+            if (isString == false)
+            {
+                throw new ArgumentException(nameof(isString), "Invalid value");
+            }
 
             TODOEntry entry = new ToDoEntryOperations().Get(entryId);
             Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
