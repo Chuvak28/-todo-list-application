@@ -149,9 +149,13 @@ namespace ToDo.App
             Console.WriteLine("Enter description for entry :");
             string description = Console.ReadLine();
 
-            Console.WriteLine("Enter due date for entry(example “MM/dd/yyyy”):");
-            string pattern = "MM/dd/yyyy";
-            DateTime date = DateTime.ParseExact(Console.ReadLine(), pattern, null);
+            Console.WriteLine("Enter due date for entry(example “MM/dd/yyyy hh:mm”):");
+            
+            bool checkDateTime = DateTime.TryParse(Console.ReadLine(), out DateTime date);
+            if(checkDateTime == false)
+            {
+                Console.WriteLine("DaterTime is not in the correct format");
+            }
 
             Console.WriteLine("Does the task is finished(y/n):");
             string statusChar = Console.ReadLine();
@@ -180,9 +184,6 @@ namespace ToDo.App
                 result.description, result.dueDate, result.isDone);
         }
 
-        /// <summary>
-        /// Remove Entry
-        /// </summary>
         static void RemoveEntry()
         {
             string choice = "y";
@@ -229,7 +230,8 @@ namespace ToDo.App
         static void GetEntry()
         {
             Console.WriteLine("Enter ID of a list:");
-            int entryId = Convert.ToInt32(Console.ReadLine());
+            string input = Console.ReadLine();
+            bool isString = int.TryParse(input, out int entryId);
 
             TODOEntry entry = new ToDoEntryOperations().Get(entryId);
             Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
@@ -270,9 +272,11 @@ namespace ToDo.App
                     break;
                 case 3:
                     Console.WriteLine("Enter due date for entry(example “MM/dd/yyyy”):");
-                    string pattern = "MM/dd/yyyy";
-                    DateTime date = DateTime.ParseExact(Console.ReadLine(), pattern, null);
-                    entry.dueDate = date;
+                    bool checkDateTime = DateTime.TryParse(Console.ReadLine(), out DateTime date);
+                    if (checkDateTime == true)
+                    {
+                        entry.dueDate = date;
+                    }
                     break;
                 case 4:
                     Console.WriteLine("Does the task is finished(true/false):");
