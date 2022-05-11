@@ -58,7 +58,7 @@ namespace ToDo.App
                 }
 
                 var removeList = new ToDoListOperations().Remove(id);
-                if (removeList > 0)
+                if (removeList == true)
                 {
                     Console.WriteLine("List with ID: {0} successfully removed ", id);
                 }
