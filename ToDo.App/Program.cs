@@ -15,6 +15,43 @@ namespace ToDo.App
             Menu();
         }
 
+        static bool ParseInteger(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return false;
+
+            }
+
+            if (str.Length > 6)
+            {
+                return false;
+            }
+
+            bool canConvert = int.TryParse(str.Trim(), out int number);
+            if (canConvert == false)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        static int VerifyParse(string str)
+        {
+            bool check = ParseInteger(str);
+            if (check == true)
+            {
+                return Convert.ToInt32(str);
+            }
+            else
+            {
+                Console.WriteLine("You entered wrong number");
+                Console.WriteLine("Please try again:");
+                string input = Console.ReadLine();
+                return VerifyParse(input);
+            }
+        }
         static string GetName()
         {
             Console.WriteLine("Enter a name:");
@@ -47,11 +84,7 @@ namespace ToDo.App
         {
                 Console.WriteLine("Enter ID of a list:");
                 string input = Console.ReadLine();
-                bool isString = int.TryParse(input, out int id);
-                if (isString == false)
-                {
-                    throw new ArgumentException(nameof(isString), "Invalid value");
-                }
+                int id = VerifyParse(input);
 
                 var removeList = new ToDoListOperations().Remove(id);
                 if (removeList == true)
@@ -69,11 +102,7 @@ namespace ToDo.App
             Console.WriteLine("Enter a list ID to modify");
 
             string input = Console.ReadLine();
-            bool isString = int.TryParse(input, out int id);
-            if (isString == false)
-            {
-                throw new ArgumentException(nameof(isString), "Invalid value");
-            }
+            int id = VerifyParse(input);
 
             string modifyName = GetName();
             Console.WriteLine("Do you want to hide a list from the list view(y/n)");
@@ -115,12 +144,7 @@ namespace ToDo.App
         {
             Console.WriteLine("Enter ID of a list:");
             string input = Console.ReadLine();
-            bool isString = int.TryParse(input, out int id);
-            if (isString == false)
-            {
-                throw new ArgumentException(nameof(isString), "Invalid value");
-            }
-
+            int id = VerifyParse(input);
             TODOList list = new ToDoListOperations().Get(id);
             DisplayList(list);
         }
@@ -130,11 +154,7 @@ namespace ToDo.App
             Console.WriteLine("Enter an list ID");
 
             string input = Console.ReadLine();
-            bool isString = int.TryParse(input, out int id);
-            if (isString == false)
-            {
-                throw new ArgumentException(nameof(isString), "Invalid value");
-            }
+            int id = VerifyParse(input);
 
             string title = GetName();
 
@@ -185,20 +205,16 @@ namespace ToDo.App
                 Console.WriteLine();
                 Console.WriteLine("Enter ID of a entry:");
                 string input = Console.ReadLine();
-                bool isString = int.TryParse(input, out int entryId);
-                if (isString == false)
-                {
-                    throw new ArgumentException(nameof(isString), "Invalid value");
-                }
+                int id = VerifyParse(input);
 
-                var removeList = new ToDoEntryOperations().Remove(entryId);
+                var removeList = new ToDoEntryOperations().Remove(id);
                 if (removeList == true)
                 {
-                    Console.WriteLine("List with ID: {0} successfully removed ", entryId);
+                    Console.WriteLine("List with ID: {0} successfully removed ", id);
                 }
                 else
                 {
-                    Console.WriteLine("Sorry, list with ID: {0} unsuccessfully removed ", entryId);
+                    Console.WriteLine("Sorry, list with ID: {0} unsuccessfully removed ", id);
                 }
 
                 Console.Write("Do you want to remove more entries (y/n)");
@@ -223,13 +239,9 @@ namespace ToDo.App
         {
             Console.WriteLine("Enter ID of a list:");
             string input = Console.ReadLine();
-            bool isString = int.TryParse(input, out int entryId);
-            if (isString == false)
-            {
-                throw new ArgumentException(nameof(isString), "Invalid value");
-            }
+            int id = VerifyParse(input);
 
-            TODOEntry entry = new ToDoEntryOperations().Get(entryId);
+            TODOEntry entry = new ToDoEntryOperations().Get(id);
             Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
                 entry.id, entry.title, entry.description, entry.dueDate, entry.isDone);
         }
@@ -239,13 +251,9 @@ namespace ToDo.App
             Console.WriteLine("Please enter id of entry to modify: ");
 
             string input = Console.ReadLine();
-            bool isString = int.TryParse(input, out int entryId);
-            if (isString == false)
-            {
-                throw new ArgumentException(nameof(isString), "Invalid value");
-            }
+            int id = VerifyParse(input);
 
-            TODOEntry entry = new ToDoEntryOperations().Get(entryId);
+            TODOEntry entry = new ToDoEntryOperations().Get(id);
 
             Console.WriteLine("1-Title");
             Console.WriteLine("2-Description");
