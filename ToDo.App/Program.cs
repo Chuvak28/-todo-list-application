@@ -15,6 +15,17 @@ namespace ToDo.App
             Menu();
         }
 
+        static bool isSelected(string str)
+        {
+            if (str == "y")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         static bool ParseInteger(string str)
         {
             if (string.IsNullOrEmpty(str))
@@ -107,22 +118,13 @@ namespace ToDo.App
             string modifyName = GetName();
             Console.WriteLine("Do you want to hide a list from the list view(y/n)");
             string resultHide = Console.ReadLine();
-            bool isVisible;
-
-            if (resultHide == "y")
-            {
-                isVisible = false;
-            }
-            else
-            {
-                isVisible = true;
-            }
+            bool isVisible = isSelected(resultHide);
 
             TODOList modifyList = new TODOList()
             {
                 id = id,
                 name = modifyName,
-                isVisible = isVisible
+                isVisible = !isVisible
             };
 
             modifyList = new ToDoListOperations().Update(modifyList);
@@ -171,15 +173,7 @@ namespace ToDo.App
 
             Console.WriteLine("Does the task is finished(y/n):");
             string statusChar = Console.ReadLine();
-            bool statusString;
-            if (statusChar == "y")
-            {
-                statusString = true;
-            }
-            else
-            {
-                statusString = false;
-            }
+            bool statusString = isSelected(statusChar);
 
             TODOEntry newentity = new TODOEntry()
             {
