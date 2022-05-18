@@ -31,7 +31,6 @@ namespace ToDo.App
             if (string.IsNullOrEmpty(str))
             {
                 return false;
-
             }
 
             if (str.Length > 6)
