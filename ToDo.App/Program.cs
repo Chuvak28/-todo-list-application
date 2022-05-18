@@ -44,6 +44,11 @@ namespace ToDo.App
                 return false;
             }
 
+            if (number < 0)
+            {
+                return false;
+            }
+
             return true;
         }
 
