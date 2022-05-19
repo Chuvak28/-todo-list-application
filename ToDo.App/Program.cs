@@ -15,61 +15,53 @@ namespace ToDo.App
             Menu();
         }
 
-        static bool isSelected(string str)
+        static DateTime ParseDateTime(Func<string> getNameFunc)
         {
-            if (str == "y")
+            string result = getNameFunc();
+            if (!string.IsNullOrEmpty(result))
             {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        static bool ParseInteger(string str)
-        {
-            if (string.IsNullOrEmpty(str))
-            {
-                return false;
+                if (DateTime.TryParse(result.Trim(), out DateTime value))
+                {
+                    return value;
+                }
             }
 
-            if (str.Length > 6)
-            {
-                return false;
-            }
-
-            bool canConvert = int.TryParse(str.Trim(), out int number);
-            if (canConvert == false)
-            {
-                return false;
-            }
-
-            if (number < 0)
-            {
-                return false;
-            }
-
-            return true;
+            Console.WriteLine("Error message");
+            return ParseDateTime(getNameFunc);
         }
 
-        static int VerifyParse(string str)
+        static bool ParseBool(Func<string> getNameFunc)
         {
-            bool check = ParseInteger(str);
-            if (check == true)
+            string result = getNameFunc();
+            if (!string.IsNullOrEmpty(result))
             {
-                return Convert.ToInt32(str);
+                if (bool.TryParse(result.Trim(), out bool value))
+                {
+                    return value;
+                }
             }
-            else
-            {
-                Console.WriteLine("You entered wrong number");
-                Console.WriteLine("Please try again:");
-                string input = Console.ReadLine();
-                return VerifyParse(input);
-            }
+
+            Console.WriteLine("Error message");
+            return ParseBool(getNameFunc);
         }
-        static string GetName()
+
+        static int ParseInteger(Func<string> getNameFunc)
         {
-            Console.WriteLine("Enter a name:");
+            string result = getNameFunc();
+            if (!string.IsNullOrEmpty(result))
+            {
+                if (int.TryParse(result.Trim(), out int value))
+                {
+                    return value;
+                }
+            }
+
+            Console.WriteLine("Error message");
+            return ParseInteger(getNameFunc);
+        }
+        static string GetInput(string inputText)
+        {
+            Console.WriteLine(inputText);
             string name = Console.ReadLine();
             return name;
         }
@@ -87,7 +79,7 @@ namespace ToDo.App
             string listName;
             while (choice != "n")
             {
-                listName = GetName();
+                listName = GetInput("Enter list name");
                 TODOList newList = new ToDoListOperations().Create(listName);
                 DisplayList(newList);
                 Console.Write("Do you want enter more lists (y/n)");
@@ -97,38 +89,30 @@ namespace ToDo.App
 
         static void RemoveList()
         {
-                Console.WriteLine("Enter ID of a list:");
-                string input = Console.ReadLine();
-                int id = VerifyParse(input);
+            int id = ParseInteger(() => GetInput("Enter ID of a list:"));
 
-                var removeList = new ToDoListOperations().Remove(id);
-                if (removeList == true)
-                {
-                    Console.WriteLine("List with ID: {0} successfully removed ", id);
-                }
-                else
-                {
-                    Console.WriteLine("Sorry, list with ID: {0} unsuccessfully removed ", id);
-                }
+            var removeList = new ToDoListOperations().Remove(id);
+            if (removeList == true)
+            {
+                Console.WriteLine("List with ID: {0} successfully removed ", id);
+            }
+            else
+            {
+                Console.WriteLine("Sorry, list with ID: {0} unsuccessfully removed ", id);
+            }
         }
 
         static void UpdateList()
         {
-            Console.WriteLine("Enter a list ID to modify");
-
-            string input = Console.ReadLine();
-            int id = VerifyParse(input);
-
-            string modifyName = GetName();
-            Console.WriteLine("Do you want to hide a list from the list view(y/n)");
-            string resultHide = Console.ReadLine();
-            bool isVisible = isSelected(resultHide);
+            int id = ParseInteger(() => GetInput("Enter a list ID to modify"));
+            string modifyName = GetInput("Enter a new name for list");
+            bool isVisible = ParseBool(() => GetInput("Do you want to hide a list from the list view(true/false)"));
 
             TODOList modifyList = new TODOList()
             {
                 id = id,
                 name = modifyName,
-                isVisible = !isVisible
+                isVisible = isVisible
             };
 
             modifyList = new ToDoListOperations().Update(modifyList);
@@ -148,36 +132,18 @@ namespace ToDo.App
 
         static void GetList()
         {
-            Console.WriteLine("Enter ID of a list:");
-            string input = Console.ReadLine();
-            int id = VerifyParse(input);
+            int id = ParseInteger(() => GetInput("Enter ID of a list: "));
             TODOList list = new ToDoListOperations().Get(id);
             DisplayList(list);
         }
 
         static void CreateEntry()
         {
-            Console.WriteLine("Enter an list ID");
-
-            string input = Console.ReadLine();
-            int id = VerifyParse(input);
-
-            string title = GetName();
-
-            Console.WriteLine("Enter description for entry :");
-            string description = Console.ReadLine();
-
-            Console.WriteLine("Enter due date for entry(example “MM/dd/yyyy hh:mm”):");
-            
-            bool checkDateTime = DateTime.TryParse(Console.ReadLine(), out DateTime date);
-            if(checkDateTime == false)
-            {
-                Console.WriteLine("DaterTime is not in the correct format");
-            }
-
-            Console.WriteLine("Does the task is finished(y/n):");
-            string statusChar = Console.ReadLine();
-            bool statusString = isSelected(statusChar);
+            int id = ParseInteger(() => GetInput("Enter ID of a entry: "));
+            string title = GetInput("Enter a title for entry: ");
+            string description = GetInput("Enter description for entry: ");
+            DateTime date = ParseDateTime(() => GetInput("Enter due date for entry(example “MM/dd/yyyy hh:mm”):"));
+            bool statusString = ParseBool(() => GetInput("Do the task is finished(true/false)"));
 
             TODOEntry newentity = new TODOEntry()
             {
@@ -201,9 +167,7 @@ namespace ToDo.App
             while (choice != "n")
             {
                 Console.WriteLine();
-                Console.WriteLine("Enter ID of a entry:");
-                string input = Console.ReadLine();
-                int id = VerifyParse(input);
+                int id = ParseInteger(() => GetInput("Enter ID of a entry: "));
 
                 var removeList = new ToDoEntryOperations().Remove(id);
                 if (removeList == true)
@@ -215,8 +179,7 @@ namespace ToDo.App
                     Console.WriteLine("Sorry, list with ID: {0} unsuccessfully removed ", id);
                 }
 
-                Console.Write("Do you want to remove more entries (y/n)");
-                choice = Console.ReadLine();
+                choice = GetInput("Do you want to remove more entries (y/n)");
                 Console.WriteLine();
             }
         }
@@ -235,9 +198,7 @@ namespace ToDo.App
 
         static void GetEntry()
         {
-            Console.WriteLine("Enter ID of a list:");
-            string input = Console.ReadLine();
-            int id = VerifyParse(input);
+            int id = ParseInteger(() => GetInput("Enter ID of a entry: "));
 
             TODOEntry entry = new ToDoEntryOperations().Get(id);
             Console.WriteLine("Entry is:\n\t ID: {0} Title: {1} Description: {2} Due date: {3} Completed: {4}",
@@ -246,10 +207,7 @@ namespace ToDo.App
 
         static void UpdateEntry()
         {
-            Console.WriteLine("Please enter id of entry to modify: ");
-
-            string input = Console.ReadLine();
-            int id = VerifyParse(input);
+            int id = ParseInteger(() => GetInput("Please enter id of entry to modify: "));
 
             TODOEntry entry = new ToDoEntryOperations().Get(id);
 
@@ -263,27 +221,16 @@ namespace ToDo.App
             switch (x)
             {
                 case 1:
-                    Console.WriteLine("Enter a new name for the title");
-                    string titleName = Console.ReadLine();
-                    entry.title = titleName;
+                    entry.title = GetInput("Enter a new name for the title");
                     break;
                 case 2:
-                    Console.WriteLine("Enter a new name for the description");
-                    string descriptionName = Console.ReadLine();
-                    entry.description = descriptionName;
+                    entry.description = GetInput("Enter a new name for the description");
                     break;
                 case 3:
-                    Console.WriteLine("Enter due date for entry(example “MM/dd/yyyy”):");
-                    bool checkDateTime = DateTime.TryParse(Console.ReadLine(), out DateTime date);
-                    if (checkDateTime == true)
-                    {
-                        entry.dueDate = date;
-                    }
+                    entry.dueDate = ParseDateTime(() => GetInput("Enter due date for entry(example “MM/dd/yyyy hh:mm”):")); ;
                     break;
                 case 4:
-                    Console.WriteLine("Does the task is finished(true/false):");
-                    bool status = Convert.ToBoolean(Console.ReadLine());
-                    entry.isDone = status;
+                    entry.isDone = ParseBool(() => GetInput("Do the task is finished(true/false)"));
                     break;
                 default:
                     Console.WriteLine("Please enter from 1 to 4");

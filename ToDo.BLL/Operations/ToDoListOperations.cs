@@ -22,14 +22,14 @@ namespace ToDo.BLL.Operations
 
         public TODOList Create(string name)
         {
-            if (name.Length > 30)
-            {
-                throw new ArgumentOutOfRangeException(nameof(name), "Name should not be more 30 characters");
-            }
-
             if (String.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException(nameof(name), "List name is null or empty");
+            }
+
+            if (name.Length > 30)
+            {
+                throw new ArgumentOutOfRangeException(nameof(name), "Name should not be more 30 characters");
             }
 
             TODOList newList = new TODOList()
@@ -66,7 +66,12 @@ namespace ToDo.BLL.Operations
         public bool Remove(int id)
         {
             TODOList removeList = Get(id);
-            
+
+            if (removeList is null)
+            {
+                throw new ArgumentNullException(nameof(removeList));
+            }
+
             db.Lists.Remove(removeList);
             try
             {

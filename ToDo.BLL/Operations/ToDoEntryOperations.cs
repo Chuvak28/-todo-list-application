@@ -22,6 +22,11 @@ namespace ToDo.BLL.Operations
         }
         public TODOEntry Create(TODOEntry item)
         {
+            if (item is null)
+            {
+                throw new ArgumentNullException(nameof(item), "Entry is null");
+            }
+
             if (String.IsNullOrEmpty(item.title))
             {
                 throw new ArgumentNullException(nameof(item), "Title is empty or null");
@@ -30,11 +35,6 @@ namespace ToDo.BLL.Operations
             if (item.title.Length > 30)
             {
                 throw new ArgumentOutOfRangeException(nameof(item.title), "Title should not be more 30 characters");
-            }
-
-            if (item is null)
-            {
-                throw new ArgumentNullException(nameof(item),"Entry is null");
             }
 
             db.Entries.Add(item);
