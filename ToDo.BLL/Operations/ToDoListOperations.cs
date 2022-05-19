@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ToDo.BLL.Entity;
 using ToDo.BLL.Interfaces;
 using System.Linq;
-
+using Microsoft.EntityFrameworkCore;
 
 namespace ToDo.BLL.Operations
 {
@@ -22,10 +22,14 @@ namespace ToDo.BLL.Operations
 
         public TODOList Create(string name)
         {
-
             if (String.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException(nameof(name), "List name is null or empty");
+            }
+
+            if (name.Length > 30)
+            {
+                throw new ArgumentOutOfRangeException(nameof(name), "Name should not be more 30 characters");
             }
 
             TODOList newList = new TODOList()
@@ -42,7 +46,7 @@ namespace ToDo.BLL.Operations
 
         public TODOList Get(int id)
         {
-            TODOList getList = db.Lists.FirstOrDefault(p => p.id == id);
+            TODOList getList = db.Lists.Find(id);
 
             if (getList is null)
             {
@@ -54,30 +58,30 @@ namespace ToDo.BLL.Operations
 
         public List<TODOList> GetAll()
         {
-            List<TODOList> allLists = new List<TODOList>();
-            var lists = db.Lists;
-            foreach (var list in lists) // query executed and data obtained from database
-            {
-                allLists.Add(list);
-            }
+            var list = db.Lists.ToList();
 
-            return allLists;
+            return list;
         }
 
-        public int Remove(int id)
+        public bool Remove(int id)
         {
-            if (id < 1)
+            TODOList removeList = Get(id);
+
+            if (removeList is null)
             {
-                throw new ArgumentOutOfRangeException(nameof(id), "out of range");
+                throw new ArgumentNullException(nameof(removeList));
             }
 
-            TODOList removeList = db.Lists.Find(id);
-            if (removeList is null)
-                throw new ArgumentNullException(nameof(removeList), "List with such ID not found");
             db.Lists.Remove(removeList);
-            int returnValue = db.SaveChanges();
-
-            return returnValue;
+            try
+            {
+                db.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateException) 
+            { 
+                return false; 
+            }
         }
 
         public TODOList Update(TODOList item)

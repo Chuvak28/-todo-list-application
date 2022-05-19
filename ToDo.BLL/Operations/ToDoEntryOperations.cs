@@ -24,7 +24,17 @@ namespace ToDo.BLL.Operations
         {
             if (item is null)
             {
-                throw new ArgumentNullException(nameof(item));
+                throw new ArgumentNullException(nameof(item), "Entry is null");
+            }
+
+            if (String.IsNullOrEmpty(item.title))
+            {
+                throw new ArgumentNullException(nameof(item), "Title is empty or null");
+            }
+
+            if (item.title.Length > 30)
+            {
+                throw new ArgumentOutOfRangeException(nameof(item.title), "Title should not be more 30 characters");
             }
 
             db.Entries.Add(item);
@@ -35,11 +45,11 @@ namespace ToDo.BLL.Operations
 
         public TODOEntry Get(int id)
         {
-            TODOEntry getList = db.Entries.FirstOrDefault(p => p.id == id);
+            TODOEntry getList = db.Entries.Find(id);
 
             if (getList is null)
             {
-                throw new ArgumentNullException(nameof(getList), "List with such id not exists ");
+                throw new ArgumentNullException(nameof(getList), "Entry with such id not exists ");
             }
 
             return getList;
@@ -47,47 +57,24 @@ namespace ToDo.BLL.Operations
 
         public List<TODOEntry> GetAll()
         {
-            List<TODOEntry> allLists = new List<TODOEntry>();
-            var entries = db.Entries;
-            foreach (var entry in entries) // query executed and data obtained from database
-            {
-                allLists.Add(entry);
-            }
+            var list = db.Entries.ToList();
 
-            return allLists;
+            return list;
         }
 
-        public int Remove(int id)
+        public bool Remove(int id)
         {
-            if (id < 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(id), "out of range");
-            }
-
-            TODOEntry removeList = db.Entries.Find(id);
-            if (removeList is null)
-                throw new ArgumentNullException(nameof(removeList), "Entry with such ID not found");
+            TODOEntry removeList = Get(id);
             db.Entries.Remove(removeList);
-            int returnValue = db.SaveChanges();
-
-            return returnValue;
-        }
-
-        public int SetStatus(int id, bool status)
-        {
-            if (id < 1)
+            try
             {
-                throw new ArgumentOutOfRangeException(nameof(id), "out of range");
+                db.SaveChanges();
+                return true;
             }
-
-            TODOEntry entry = db.Entries.FirstOrDefault(list => list.id == id);
-
-            entry.isDone = status;
-
-            db.Entries.Update(entry);
-            int result = db.SaveChanges();
-
-            return result;
+            catch (DbUpdateException)
+            {
+                return false;
+            }
         }
 
         public TODOEntry Update(TODOEntry item)
